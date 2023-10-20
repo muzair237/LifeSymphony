@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 
 import { useProfile } from "../Components/Hooks/UserHooks";
 
-import { logoutUser } from "../slices/thunks";
 
 const AuthProtected = (props) => {
   const dispatch = useDispatch();

@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import LightDark from "../LightDark";
 import { layoutModeTypes } from "../../constants/layout";
 import { leftSidebarTypes } from "../../constants/layout";
-import { changeSidebarTheme } from "../../../slices/thunks";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),

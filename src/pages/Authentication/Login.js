@@ -6,20 +6,21 @@ import {
   FormWrapper,
   LogoImg,
   MainTitle,
-  Form,
+  Forms,
   InputTag,
   LoginOpt,
-  RemMe,
+  ForgotPassword,
   LoginBtn,
   BtnWrapper,
   TagContainer,
+  SocialLogin,
+  Credits,
   GoogleLoginBtn,
 } from "./Login.style";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import Logo from "../../assets/images/Login/logo.png";
 import Google from "../../assets/images/Login/google.png";
-
 import Close from "../../assets/images/Login/close.png";
 import Hide from "../../assets/images/Login/hide.png";
 import Main from "../../assets/images/Login/main.png";
@@ -27,7 +28,7 @@ import { Link, useNavigate } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 // Formik validation
 import * as Yup from "yup";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 // actions
 import {
@@ -36,33 +37,14 @@ import {
   resetLoginFlag,
   loginUserReal,
   registerUserReal,
-} from "../../slices/thunks";
+} from "../../slices/auth/thunk";
 
-//Import config;
-import { FormFeedback } from "reactstrap";
-//import images
-
-const Login = (props) => {
+const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => ({
     user: state.Account?.user,
   }));
-
-  const [userLogin, setUserLogin] = useState([]);
-  const [passwordShow, setPasswordShow] = useState(false);
-
-  useEffect(() => {
-    if (user && user) {
-      setUserLogin({
-        username: user.user.username,
-        password: user.user.confirm_password,
-      });
-    }
-  }, [user]);
-  const loginClicked = () => {
-    navigate("/profile");
-  };
 
   const { error, loading, errorMsg } = useSelector((state) => ({
     error: state.Login.error,
@@ -70,39 +52,26 @@ const Login = (props) => {
     errorMsg: state.Login.errorMsg,
   }));
 
-  useEffect(() => {
-    if (errorMsg) {
-      setTimeout(() => {
-        dispatch(resetLoginFlag());
-      }, 3000);
-    }
-  }, [dispatch, errorMsg]);
-
   document.title = " SignIn | HREvis";
 
-  const [loginInfo, setLoginInfo] = useState({
-    username: "",
+  const initialValues = {
+    email: "",
     password: "",
-  });
-
-  const handleLogin = () => {
-    dispatch(loginUserReal(loginInfo.username, loginInfo.password, navigate));
   };
-
-  // const validation = useFormik({
-  //   enableReinitialize: true,
-  //   initialValues: {
-  //     username: "",
-  //     password: "",
-  //   },
-  //   validationSchema: Yup.object({
-  //     username: Yup.string().required("Please Enter Your username"),
-  //     password: Yup.string().required("Please Enter Your Password"),
-  //   }),
-  //   onSubmit: (values) => {
-  //     dispatch(loginUserReal(props.router.navigate));
-  //   },
-  // });
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .required("Please Enter Email!")
+      .email("Please Enter a Valid Email!"),
+    password: Yup.string().required("Please Enter Password!"),
+  });
+  const onSubmit = (values) => {
+    const loginInfo = {
+      email: values.email,
+      password: values.password,
+    };
+    console.log(loginInfo);
+    dispatch(loginUserReal({ loginInfo: loginInfo, navigate }));
+  };
 
   const [showPass, setShowPass] = useState(false);
   return (
@@ -117,83 +86,77 @@ const Login = (props) => {
               <h1>HREVIS </h1>
               <p>Please fill your detail to access your account.</p>
             </MainTitle>
-            <Form>
-              <TagContainer>
-                <label htmlFor="email">Email</label>
-                <InputTag>
-                  {" "}
-                  <input
-                    id="username"
-                    placeholder="Enter email"
-                    type="username"
-                    name="username"
-                    value={loginInfo.username}
-                    onChange={(e) =>
-                      setLoginInfo((prev) => ({
-                        ...prev,
-                        username: e.target.value,
-                      }))
-                    }
-                  />
-                  <img
-                    src={Close}
-                    alt=""
-                    onClick={() =>
-                      setLoginInfo((prev) => ({ ...prev, username: "" }))
-                    }
-                  />
-                </InputTag>
-              </TagContainer>
-              <TagContainer>
-                <label htmlFor="password">Password</label>
-                <InputTag>
-                  <input
-                    id="password"
-                    type={showPass ? "text " : "password"}
-                    name="password"
-                    placeholder="Enter password"
-                    value={loginInfo.password}
-                    onChange={(e) =>
-                      setLoginInfo((prev) => ({
-                        ...prev,
-                        password: e.target.value,
-                      }))
-                    }
-                  />
-                  <img
-                    src={Hide}
-                    alt=""
-                    onClick={() => setShowPass(!showPass)}
-                  />
-                </InputTag>
-              </TagContainer>
-              <LoginOpt>
-                <RemMe>
-                  <input type="checkbox" />
-                  <span>Remember me</span>
-                </RemMe>
-              </LoginOpt>
-              <BtnWrapper>
-                <LoginBtn
-                  BGColor="#1CD6CE"
-                  FColor="#fff"
-                  Padding="15px"
-                  onClick={handleLogin}
-                  color="success"
-                  disabled={error ? null : loading ? true : false}
-                  className="btn btn-success w-100"
-                  type="submit"
-                >
-                  {error ? null : loading ? (
-                    <Spinner size="sm" className="me-2">
+            <Forms>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                enableReinitialize={true}
+                onSubmit={onSubmit}
+              >
+                <Form>
+                  <TagContainer>
+                    <label htmlFor="email">Email</label>
+                    <InputTag>
                       {" "}
-                      Loading...{" "}
-                    </Spinner>
-                  ) : null}
-                  Sign in
-                </LoginBtn>
-              </BtnWrapper>
-            </Form>
+                      <Field
+                        id="email"
+                        placeholder="johndua@gmail.com"
+                        type="email"
+                        name="email"
+                      />
+                      <img
+                        src={Close}
+                        alt=""
+                        onClick={() =>
+                          setLoginInfo((prev) => ({ ...prev, username: "" }))
+                        }
+                      />
+                    </InputTag>
+                  </TagContainer>
+                  <TagContainer>
+                    <label htmlFor="password">Password</label>
+                    <InputTag>
+                      <Field
+                        id="password"
+                        type={showPass ? "text " : "password"}
+                        name="password"
+                        placeholder="Enter Password"
+                      />
+                      <img
+                        src={Hide}
+                        alt=""
+                        onClick={() => setShowPass(!showPass)}
+                      />
+                    </InputTag>
+                  </TagContainer>
+                  <LoginOpt>
+                    {/* <RemMe>
+                      <input type="checkbox" />
+                      <span>Remember me</span>
+                    </RemMe> */}
+                  </LoginOpt>
+                  <BtnWrapper>
+                    <LoginBtn
+                      BGColor="#1CD6CE"
+                      FColor="#fff"
+                      Padding="15px"
+                      color="success"
+                      disabled={error ? null : loading ? true : false}
+                      className="btn btn-success w-100"
+                      type="submit"
+                    >
+                      {/* {error ? null : loading ? (
+                        <Spinner size="sm" className="me-2">
+                          {" "}
+                          Loading...{" "}
+                        </Spinner>
+                      ) : null} */}
+                      Sign in
+                    </LoginBtn>
+                  </BtnWrapper>
+                </Form>
+              </Formik>
+            </Forms>
           </FormWrapper>
           <p>@created by webevis</p>
         </LeftSec>
@@ -201,7 +164,7 @@ const Login = (props) => {
           <img src={Main} alt="Main" />
         </RightSec>
       </LoginContainer>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 
