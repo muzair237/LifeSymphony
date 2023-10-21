@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Dropdown,
   DropdownItem,
@@ -7,11 +7,11 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 
 const ProfileDropdown = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => ({
     user: state.Login.user,
   }));

@@ -5,7 +5,7 @@ const Navdata = () => {
   const history = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
-  const [isTasks, setIsTasks] = useState(false);
+  const [isGoals, setIsGoals] = useState(false);
   const [isReports, setIsReports] = useState(false);
   const [isAnalytics, setIsAnalytics] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
@@ -57,15 +57,15 @@ const Navdata = () => {
       },
     },
     {
-      id: "Tasks",
-      label: "Tasks",
+      id: "Goals",
+      label: "Health Goals",
       icon: "ri-flag-2-line",
-      link: "/tasks",
-      stateVariables: isTasks,
+      link: "/healthGoals",
+      stateVariables: isGoals,
       click: function (e) {
         e.preventDefault();
-        setIsTasks(!isTasks);
-        setIscurrentState("Tasks");
+        setIsTasks(!isGoals);
+        setIscurrentState("Goals");
         updateIconSidebar(e);
       },
     },

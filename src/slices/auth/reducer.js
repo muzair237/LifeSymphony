@@ -17,7 +17,7 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    
+
   },
   extraReducers: (builder) => {
     builder
@@ -27,7 +27,6 @@ const loginSlice = createSlice({
         state.errorMsg = false;
       })
       .addCase(loginUserReal.fulfilled, (state, action) => {
-        console.log(action?.payload?.user);
         (state.user = action.payload), (state.error = "");
         state.loading = false;
         state.errorMsg = false;
@@ -38,7 +37,25 @@ const loginSlice = createSlice({
         state.isUserLogout = false;
         state.errorMsg = true;
       })
-      
+
+      .addCase(logoutUser.pending, (state, action) => {
+        state.error = "";
+        state.loading = true;
+        state.errorMsg = false;
+        state.isUserLogout = false;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.error = "";
+        state.loading = false;
+        state.errorMsg = false;
+        state.isUserLogout = true;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+        state.isUserLogout = false;
+        state.errorMsg = true;
+      })
   },
 });
 

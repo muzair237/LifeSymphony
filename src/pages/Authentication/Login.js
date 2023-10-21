@@ -1,58 +1,21 @@
-import React, { useEffect, useState } from "react";
-import {
-  LoginContainer,
-  RightSec,
-  LeftSec,
-  FormWrapper,
-  LogoImg,
-  MainTitle,
-  Forms,
-  InputTag,
-  LoginOpt,
-  ForgotPassword,
-  LoginBtn,
-  BtnWrapper,
-  TagContainer,
-  SocialLogin,
-  Credits,
-  GoogleLoginBtn,
-} from "./Login.style";
-//redux
+import React, { useState } from 'react';
+import { Card, CardBody, Col, Container, Input, Label, Row, Button } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
-import Logo from "../../assets/images/Login/logo.png";
-import Google from "../../assets/images/Login/google.png";
-import Close from "../../assets/images/Login/close.png";
-import Hide from "../../assets/images/Login/hide.png";
-import Main from "../../assets/images/Login/main.png";
 import { Link, useNavigate } from "react-router-dom";
-import withRouter from "../../Components/Common/withRouter";
-// Formik validation
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
-// actions
-import {
-  loginUser,
-  socialLogin,
-  resetLoginFlag,
-  loginUserReal,
-  registerUserReal,
-} from "../../slices/auth/thunk";
+import logoLight from "../../assets/images/Login/logo.png"
+import withRouter from '../../Components/Common/withRouter';
+import { loginUserReal } from '../../slices/auth/thunk';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => ({
-    user: state.Account?.user,
-  }));
-
-  const { error, loading, errorMsg } = useSelector((state) => ({
-    error: state.Login.error,
+  const {loading } = useSelector(state => ({
     loading: state.Login.loading,
-    errorMsg: state.Login.errorMsg,
   }));
 
-  document.title = " SignIn | HREvis";
+  const [passwordShow, setPasswordShow] = useState(false);
 
   const initialValues = {
     email: "",
@@ -69,102 +32,95 @@ const Login = () => {
       email: values.email,
       password: values.password,
     };
-    console.log(loginInfo);
     dispatch(loginUserReal({ loginInfo: loginInfo, navigate }));
   };
 
-  const [showPass, setShowPass] = useState(false);
+  document.title = "LifeSymphony | Login";
+
   return (
     <React.Fragment>
-      <LoginContainer>
-        <LeftSec>
-          <LogoImg>
-            <img src={Logo} alt="Logo" />
-          </LogoImg>
-          <FormWrapper>
-            <MainTitle>
-              <h1>HREVIS </h1>
-              <p>Please fill your detail to access your account.</p>
-            </MainTitle>
-            <Forms>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                enableReinitialize={true}
-                onSubmit={onSubmit}
-              >
-                <Form>
-                  <TagContainer>
-                    <label htmlFor="email">Email</label>
-                    <InputTag>
-                      {" "}
-                      <Field
-                        id="email"
-                        placeholder="johndua@gmail.com"
-                        type="email"
-                        name="email"
-                      />
-                      <img
-                        src={Close}
-                        alt=""
-                        onClick={() =>
-                          setLoginInfo((prev) => ({ ...prev, username: "" }))
-                        }
-                      />
-                    </InputTag>
-                  </TagContainer>
-                  <TagContainer>
-                    <label htmlFor="password">Password</label>
-                    <InputTag>
-                      <Field
-                        id="password"
-                        type={showPass ? "text " : "password"}
-                        name="password"
-                        placeholder="Enter Password"
-                      />
-                      <img
-                        src={Hide}
-                        alt=""
-                        onClick={() => setShowPass(!showPass)}
-                      />
-                    </InputTag>
-                  </TagContainer>
-                  <LoginOpt>
-                    {/* <RemMe>
-                      <input type="checkbox" />
-                      <span>Remember me</span>
-                    </RemMe> */}
-                  </LoginOpt>
-                  <BtnWrapper>
-                    <LoginBtn
-                      BGColor="#1CD6CE"
-                      FColor="#fff"
-                      Padding="15px"
-                      color="success"
-                      disabled={error ? null : loading ? true : false}
-                      className="btn btn-success w-100"
-                      type="submit"
+      <div className="auth-page-content">
+        <Container>
+          <Row>
+            <Col lg={12}>
+              <div className="text-center mt-sm-5 mb-4 text-white-50">
+                <div>
+                  <Link to="/" className="d-inline-block auth-logo">
+                    <img src={logoLight} alt="" height="20" />
+                  </Link>
+                </div>
+                <p className="mt-3 fs-15 fw-medium text-dark">Premium Admin & Dashboard Template</p>
+              </div>
+            </Col>
+          </Row>
+
+          <Row className="justify-content-center">
+            <Col md={8} lg={6} xl={5}>
+              <Card className="mt-4">
+                <CardBody className="p-4">
+                  <div className="text-center mt-2">
+                    <h5 className="text-primary">Welcome Back !</h5>
+                    <p className="text-muted">Sign in to continue to LifeSymphony.</p>
+                  </div>
+                  <div className="p-2 mt-4">
+                    <Formik
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      onSubmit={onSubmit}
                     >
-                      {/* {error ? null : loading ? (
-                        <Spinner size="sm" className="me-2">
-                          {" "}
-                          Loading...{" "}
-                        </Spinner>
-                      ) : null} */}
-                      Sign in
-                    </LoginBtn>
-                  </BtnWrapper>
-                </Form>
-              </Formik>
-            </Forms>
-          </FormWrapper>
-          <p>@created by webevis</p>
-        </LeftSec>
-        <RightSec>
-          <img src={Main} alt="Main" />
-        </RightSec>
-      </LoginContainer>
-    </React.Fragment >
+                      <Form>
+                        <div className="mb-3">
+                          <Label htmlFor="email" className="form-label">Email</Label>
+                          <Field
+                            name="email"
+                            className="form-control"
+                            placeholder="Enter email"
+                            type="email"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <div className="float-end">
+                            <Link to="/forgot-password" className="text-muted">Forgot password?</Link>
+                          </div>
+                          <Label className="form-label" htmlFor="password-input">Password</Label>
+                          <div className="position-relative auth-pass-inputgroup mb-3">
+                            <Field
+                              name="password"
+                              type={passwordShow ? "text" : "password"}
+                              className="form-control pe-5"
+                              placeholder="Enter Password"
+                            />
+                            <button className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon" onClick={() => setPasswordShow(!passwordShow)}><i className="ri-eye-fill align-middle"></i></button>
+                          </div>
+                        </div>
+
+                        <div className="form-check">
+                          <Input className="form-check-input" type="checkbox" value="" id="auth-remember-check" />
+                          <Label className="form-check-label" htmlFor="auth-remember-check">Remember me</Label>
+                        </div>
+
+                        <div className="mt-4">
+                          <Button color="success"
+                            disabled={loading}
+                            className="btn btn-success w-100" type="submit">
+                            Sign In
+                          </Button>
+                        </div>
+                        <div className="mt-4 text-center">
+                          <div className="signin-other-title">
+                            <h5 className="fs-13 mb-4 title">Don't have an account ? <Link to="/register" className="fw-semibold text-primary text-decoration-underline"> Signup </Link></h5>
+                          </div>
+                        </div>
+                      </Form>
+                    </Formik>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    </React.Fragment>
   );
 };
 

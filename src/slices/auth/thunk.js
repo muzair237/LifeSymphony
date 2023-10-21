@@ -19,3 +19,10 @@ export const registerUserReal = createAsyncThunk(
     } catch (error) {}
   }
 );
+
+export const logoutUser = createAsyncThunk("logout/logoutUser", async ({navigate}) => {
+  try {
+    return await service.getLogout(navigate);
+  } catch (error) {}
+});
+

@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { Navigate, Route } from "react-router-dom";
 import { setAuthorization } from "../helpers/api_helper";
 import { useDispatch } from "react-redux";
-
 import { useProfile } from "../Components/Hooks/UserHooks";
+import { logoutUser } from "../slices/auth/thunk";
 
 
 const AuthProtected = (props) => {

@@ -15,13 +15,12 @@ const getLogin = async (loginInfo, navigate) => {
         pending: "Signing In...",
       }
     );
-    console.log(response);
     const { status, auth } = response;
     if (status === true) {
       sessionStorage?.setItem("authUser", JSON?.stringify(auth));
       navigate("/dashboard");
     } else {
-      toast.error(response?.errors);
+      toast.error(response?.message);
     }
     return response;
   } catch (error) {
@@ -43,20 +42,40 @@ const getSignedUp = async (signupInfo, navigate) => {
       }
     );
     console.log(response?.data);
-    if (response?.data?.status === true) {
+    const { status, auth } = response;
+    if (status === true) {
       sessionStorage.setItem("authUser", JSON.parse(response?.data?.token));
       navigate("/");
     } else {
-      toast.error(response?.data?.message, {
+      toast.error(response?.message, {
         autoClose: 3000
       });
     }
-    return response?.data?.user;
+    return response;
   } catch (error) {
     toast.error("Failed to SignUp!");
     // toast.error(error?.response?.data?.message);
   }
 };
+
+const getLogout = async (navigate) => {
+  try {
+    toast.success("Logged Out");
+    sessionStorage.removeItem("authUser");
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf("=");
+      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    }
+    navigate("/login");
+  } catch (error) {
+    toast.error(error);
+  }
+};
+
 
 
 
@@ -64,4 +83,5 @@ const getSignedUp = async (signupInfo, navigate) => {
 export const service = {
   getLogin,
   getSignedUp,
+  getLogout
 };
