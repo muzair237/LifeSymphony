@@ -2,11 +2,11 @@ import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../slices/auth/thunk";
-
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
 import withRouter from "../../Components/Common/withRouter";
+import { toast } from "react-toastify";
 
 const Logout = (props) => {
   const dispatch = useDispatch();
@@ -14,7 +14,6 @@ const Logout = (props) => {
   const { isUserLogout } = useSelector((state) => ({
     isUserLogout: state.Login.isUserLogout,
   }));
-  console.log(isUserLogout);
 
   function clearCookies() {
     var cookies = document.cookie.split(";");
@@ -30,8 +29,11 @@ const Logout = (props) => {
   useEffect(() => {
     dispatch(logoutUser());
     sessionStorage.removeItem("authUser"); // Remove the authUser item from sessionStorage
+    toast.success("Logged Out Successfully!")
     clearCookies();
-    navigate("/login");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
   }, [dispatch]);
 
   if (isUserLogout) {

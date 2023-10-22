@@ -21,7 +21,8 @@ import Analytics from "../pages/Analytics/analytics";
 import Reports from "../pages/Reports/reports";
 
 //Profile
-import Profile from "../pages/Profile/profile";
+import Profile from "../pages/Profile/Profile";
+import SignUp from "../pages/Authentication/SignUp";
 
 
 
@@ -53,6 +54,7 @@ const publicRoutes = [
   // Authentication Page
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
+  { path: "/signUp", component: <SignUp /> },
 
   //AuthenticationInner pages
   // { path: "/auth-404-basic", component: <Basic404 /> },

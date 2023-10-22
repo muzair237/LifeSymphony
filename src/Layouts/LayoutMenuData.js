@@ -6,7 +6,8 @@ const Navdata = () => {
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isGoals, setIsGoals] = useState(false);
-  const [isReports, setIsReports] = useState(false);
+  const [isDietPlan, setIsDietPlan] = useState(false);
+  const [isMilestones, setIsMilestones] = useState(false);
   const [isAnalytics, setIsAnalytics] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isRole, setIsRole] = useState(false);
@@ -57,9 +58,22 @@ const Navdata = () => {
       },
     },
     {
+      id: "dietPlan",
+      label: "Diet Plan",
+      icon: "ri-file-list-fill",
+      link: "/dietPlan",
+      stateVariables: isDietPlan,
+      click: function (e) {
+        e.preventDefault();
+        setIsAnalytics(!isDietPlan);
+        setIscurrentState("DietPlan");
+        updateIconSidebar(e);
+      },
+    },
+    {
       id: "Goals",
       label: "Health Goals",
-      icon: "ri-flag-2-line",
+      icon: "ri-flag-2-fill",
       link: "/healthGoals",
       stateVariables: isGoals,
       click: function (e) {
@@ -70,35 +84,22 @@ const Navdata = () => {
       },
     },
     {
-      id: "analytics",
-      label: "Analytics",
-      icon: "ri-numbers-line",
-      link: "/analytics",
-      stateVariables: isAnalytics,
+      id: "milestones",
+      label: "Milestones",
+      icon: "ri-award-fill",
+      link: "/milestones",
+      stateVariables: isMilestones,
       click: function (e) {
         e.preventDefault();
-        setIsAnalytics(!isAnalytics);
-        setIscurrentState("Analytics");
-        updateIconSidebar(e);
-      },
-    },
-    {
-      id: "reports",
-      label: "Reports",
-      icon: "ri-pie-chart-line",
-      link: "/reports",
-      stateVariables: isReports,
-      click: function (e) {
-        e.preventDefault();
-        setIsReports(!isReports);
-        setIscurrentState("Reports");
+        setIsReports(!isMilestones);
+        setIscurrentState("Milestones");
         updateIconSidebar(e);
       },
     },
     {
       id: "profile",
       label: "Profile",
-      icon: "ri-account-circle-line",
+      icon: "ri-account-circle-fill",
       link: "/profile",
       stateVariables: isProfile,
       click: function (e) {

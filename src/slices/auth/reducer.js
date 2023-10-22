@@ -32,7 +32,24 @@ const loginSlice = createSlice({
         state.errorMsg = false;
       })
       .addCase(loginUserReal.rejected, (state, action) => {
-        state.error = action?.payload?.data;
+        state.error = action?.payload;
+        state.loading = false;
+        state.isUserLogout = false;
+        state.errorMsg = true;
+      })
+
+      .addCase(registerUserReal.pending, (state, action) => {
+        (state.user = {}), (state.error = "");
+        state.loading = true;
+        state.errorMsg = false;
+      })
+      .addCase(registerUserReal.fulfilled, (state, action) => {
+        (state.user = action.payload?.user), (state.error = "");
+        state.loading = false;
+        state.errorMsg = false;
+      })
+      .addCase(registerUserReal.rejected, (state, action) => {
+        state.error = action?.payload;
         state.loading = false;
         state.isUserLogout = false;
         state.errorMsg = true;

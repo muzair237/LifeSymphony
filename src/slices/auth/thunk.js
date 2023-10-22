@@ -13,9 +13,9 @@ export const loginUserReal = createAsyncThunk(
 );
 export const registerUserReal = createAsyncThunk(
   "register/registerUserReal",
-  async () => {
+  async ({ signUpInfo, navigate }) => {
     try {
-      return await service.getRegistered(history);
+      return await service.getSignedUp(signUpInfo, navigate);
     } catch (error) {}
   }
 );

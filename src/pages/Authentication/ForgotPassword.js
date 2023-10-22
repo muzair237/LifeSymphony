@@ -30,12 +30,11 @@ const Login = () => {
   const onSubmit = (values) => {
     const loginInfo = {
       email: values.email,
-      password: values.password,
     };
-    dispatch(loginUserReal({ loginInfo: loginInfo, navigate }));
+    // dispatch(loginUserReal({ loginInfo: loginInfo, navigate }));
   };
 
-  document.title = "LifeSymphony | Login";
+  document.title = "LifeSymphony | Forgot Password";
 
   return (
     <React.Fragment>

@@ -2,6 +2,7 @@ import React from "react";
 
 //import Scss
 import "../src/assets/scss/themes.scss";
+import "./App.css";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -12,7 +13,12 @@ function App() {
   return (
     <React.Fragment>
       <Route />
-      <ToastContainer closeButton={false} limit={1} />
+      <ToastContainer 
+        closeButton={false}
+        pauseOnHover={false}
+        newestOnTop={true}
+        autoClose={2200}
+        limit={1} />
     </React.Fragment>
   );
 }

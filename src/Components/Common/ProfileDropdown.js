@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Dropdown,
@@ -7,32 +7,17 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 
 const ProfileDropdown = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => ({
-    user: state.Login.user,
-  }));
+  const user = useSelector((state) => state?.Login?.user?.user);
+  console.log(user);
 
   const [userName, setUserName] = useState("Dave");
-  let obj = JSON.parse(sessionStorage.getItem("authUser"));
-  // let obj;
-  // useEffect(() => {
-  //   if (sessionStorage.getItem("authUser")) {
-  //     obj = JSON.parse(sessionStorage.getItem("authUser"));
-  //     setUserName(
-  //       obj.firstName === undefined || obj.lastName === undefined
-  //         ? user.firstName + " " + user.lastName
-  //           ? user.firstName + " " + user.lastName
-  //           : obj.firstName + " " + obj.lastName
-  //         : "Admin" || "Admin"
-  //     );
-  //   }
-  // }, [userName, user]);
 
-  //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
@@ -44,26 +29,26 @@ const ProfileDropdown = () => {
         toggle={toggleProfileDropdown}
         className="ms-sm-3 header-item topbar-user"
       >
-        <DropdownToggle tag="button" type="button" className="btn">
+         <DropdownToggle tag="button" type="button" className="btn">
           <span className="d-flex align-items-center">
             <img
               className="rounded-circle header-profile-user"
-              src={obj?.profilePic}
+              src={user?.profilePicture}
               alt="Header Avatar"
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
-                {obj?.firstName} {obj?.lastName}
+                {user?.firstname} {user?.lastname}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
-                {obj?.organization}
+                {user?.role}
               </span>
             </span>
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header">
-            Welcome {user.firstName} {user.lastName}!
+            Welcome {user?.firstname} {user?.lastname}!
           </h6>
           <DropdownItem className="p-0">
             <Link

@@ -18,7 +18,10 @@ const getLogin = async (loginInfo, navigate) => {
     const { status, auth } = response;
     if (status === true) {
       sessionStorage?.setItem("authUser", JSON?.stringify(auth));
-      navigate("/dashboard");
+      toast.success("Signed In Successfully!");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     } else {
       toast.error(response?.message);
     }
@@ -41,20 +44,19 @@ const getSignedUp = async (signupInfo, navigate) => {
         pending: "Signing Up...",
       }
     );
-    console.log(response?.data);
     const { status, auth } = response;
     if (status === true) {
-      sessionStorage.setItem("authUser", JSON.parse(response?.data?.token));
-      navigate("/");
+      sessionStorage?.setItem("authUser", JSON?.stringify(auth));
+      toast.success("Signed Up Successfully!");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
     } else {
-      toast.error(response?.message, {
-        autoClose: 3000
-      });
+      toast.error(response?.message);
     }
     return response;
   } catch (error) {
-    toast.error("Failed to SignUp!");
-    // toast.error(error?.response?.data?.message);
+    toast.error(error);
   }
 };
 
@@ -75,10 +77,6 @@ const getLogout = async (navigate) => {
     toast.error(error);
   }
 };
-
-
-
-
 
 export const service = {
   getLogin,
