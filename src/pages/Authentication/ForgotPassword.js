@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import logoLight from "../../assets/images/Login/logo.png"
-import withRouter from '../../Components/Common/withRouter';
 import { loginUserReal } from '../../slices/auth/thunk';
+import withAuthProtection from '../../Components/Common/withAuthProtection';
 
-const Login = () => {
+const ForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector(state => ({
@@ -129,4 +129,4 @@ const Login = () => {
   );
 };
 
-export default withRouter(Login);
+export default withAuthProtection(ForgotPassword);

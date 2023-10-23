@@ -7,6 +7,7 @@ import { Navigate } from "react-router-dom";
 //login
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
+import ForgetPassword from "../pages/Authentication/ForgotPassword";
 
 //Dashboard
 import Dashboard from "../pages/Dashboard/Dashoboard";
@@ -55,6 +56,7 @@ const publicRoutes = [
   { path: "/logout", component: <Logout /> },
   { path: "/login", component: <Login /> },
   { path: "/signUp", component: <SignUp /> },
+  { path: "/forgetPassword", component: <ForgetPassword /> },
 
   //AuthenticationInner pages
   // { path: "/auth-404-basic", component: <Basic404 /> },

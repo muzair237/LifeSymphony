@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import logoLight from "../../assets/images/Login/logo.png"
-import withRouter from '../../Components/Common/withRouter';
+import withAuthProtection from '../../Components/Common/withAuthProtection';
 import { registerUserReal } from '../../slices/auth/thunk';
 
 const SignUp = () => {
@@ -170,4 +170,4 @@ const SignUp = () => {
     );
 };
 
-export default withRouter(SignUp);
+export default withAuthProtection(SignUp);
