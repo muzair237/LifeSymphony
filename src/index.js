@@ -1,17 +1,17 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
-import { persistReducer } from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
-  storage: storage,
+  storage,
   whitelist: ["Login"],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -21,16 +21,19 @@ export const store = configureStore({
   devTools: true,
 });
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+let persistor = persistStore(store);
 
-root.render(
-  <Provider store={store}>
-    <React.Fragment>
+const rootElement = document.getElementById("root");
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <App />
       </BrowserRouter>
-    </React.Fragment>
-  </Provider>
+    </Provider>
+  </React.StrictMode>,
+  rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function

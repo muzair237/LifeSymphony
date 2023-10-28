@@ -6,7 +6,8 @@ import {
   sendOTP,
   confirmOTP,
   resendOTP,
-  resetPassword
+  resetPassword,
+  updateProfile
 } from "./thunk";
 export const initialState = {
   user: {},
@@ -110,6 +111,20 @@ const loginSlice = createSlice({
       })
       .addCase(resetPassword.rejected, (state) => {
         state.errorMsg = "An error occurred in updating password!";
+        state.isError = true;
+        state.loading = false;
+      })
+      //UPDATE PROFILE REDUCERS
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateProfile.rejected, (state) => {
+        state.errorMsg = "An Error Occurred in Udating Profile!";
         state.isError = true;
         state.loading = false;
       })

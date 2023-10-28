@@ -1,23 +1,110 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Container, Form, Input, Label, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Container, Input, Label, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
 import classnames from "classnames";
 import Flatpickr from "react-flatpickr";
-
+import countries from '../../common/countries';
 //import images
 import profileBg from '../../assets/images/profile-bg.jpg';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as yup from 'yup';
+import { updateProfile } from '../../slices/auth/thunk';
+
 // import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
 
 const Profile = () => {
+    const dispatch = useDispatch();
+    const ages = Array.from({ length: 100 }, (_, index) => index + 1);
+    const heights = [];
+    for (let i = 100; i <= 250; i++) {
+        heights.push(i);
+    }
+    const weights = [];
+    const increment = 1;
+    const maxWeight = 150;
+
+    for (let i = 30; i <= maxWeight; i += increment) {
+        weights.push(i);
+    }
+    const [userInfo, setUserInfo] = useState();
     document.title = "LifeSymphony | Profile    ";
-    const user = useSelector((state) => state?.Login?.user?.user);
-    console.log(user);
+    const user = useSelector((state) => state?.Login?.user);
+    const userId = user?._id;
     const [activeTab, setActiveTab] = useState("1");
+    const [selectedMonth, setSelectedMonth] = useState('');
 
     const tabChange = (tab) => {
         if (activeTab !== tab) setActiveTab(tab);
     };
+    const initialValues = {
+        firstname: user ? user?.firstname : '',
+        lastname: user ? user?.lastname : '',
+        email: user ? user?.email : '',
+        DOBmonths: user ? user?.DOBmonths : "",
+        DOBdays: user ? user?.DOBdays : "",
+        DOByears: user ? user?.DOByears : "",
+        country: user?.country ? user?.country : '',
+        city: user?.city ? user?.city : "",
+        gender: user?.gender ? user?.gender : "",
+        bloodGroup: user?.bloodGroup ? user?.bloodGroup : "",
+        age: user?.age ? user?.age : "",
+        height: user?.height ? user?.height : "",
+        weight: user?.weight ? user?.weight : "",
+    };
+    const validationSchema = yup.object().shape({
+        firstname: yup.string().min(3,"First Name should be atleast 3 Characters").required('First name is required'),
+        lastname: yup.string().min(3,"Last Name should be atleast 3 Characters").required('Last name is required'),
+        email: yup.string().email('Invalid email').required('Email is required'),
+        DOBmonths: yup.string().nullable(),
+        DOBdays: yup.string().nullable(),
+        DOByears: yup.string().nullable(),
+        country: yup.string(),
+        city: yup.string().nullable(),
+        gender: yup.string(),
+        bloodGroup: yup.string(),
+        age: yup.string(),
+        height: yup.string(),
+        weight: yup.string(),
+    });
+    const onSubmit = values => {
+        const profileInfo = {
+            firstname: values.firstname,
+            lastname: values.lastname,
+            email: values.email,
+            DOBmonths: values.DOBmonths,
+            DOBdays: values.DOBdays,
+            DOByears: values.DOByears,
+            country: values.country,
+            city: values.city,
+            gender: values.gender,
+            bloodGroup: values.bloodGroup,
+            age: values.age,
+            height: values.height,
+            weight: values.weight,
+        };
+        console.log(userId);
+        console.log("profileL: ",profileInfo);
+        dispatch(updateProfile({profileInfo,userId}));
+    };
+
+    const allMonths = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
+    useEffect(() => {
+        setUserInfo(user);
+    }, [userInfo])
 
     return (
         <React.Fragment>
@@ -163,144 +250,243 @@ const Profile = () => {
                                 <CardBody className="p-4">
                                     <TabContent activeTab={activeTab}>
                                         <TabPane tabId="1">
-                                            <Form>
-                                                <Row>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="firstnameInput" className="form-label">First
-                                                                Name *</Label>
-                                                            <Input type="text" className="form-control" id="firstnameInput"
-                                                                placeholder="Firstname" defaultValue={user ? user?.firstname : "Dave"} />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="lastnameInput" className="form-label">Last
-                                                                Name *</Label>
-                                                            <Input type="text" className="form-control" id="lastnameInput"
-                                                                placeholder="Lastname" defaultValue={user ? user?.lastname : "Dave"} />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="emailInput" className="form-label">Email
-                                                                Address *</Label>
-                                                            <Input type="email" className="form-control" disabled id="emailInput"
-                                                                placeholder="Email"
-                                                                defaultValue={user ? user?.email : "daveadame@gmail.com"} />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="DOBInput" className="form-label">Date of Birth</Label>
-                                                            <Flatpickr
-                                                                className="form-control"
-                                                                options={{
-                                                                    dateFormat: "Y-m-d",
-                                                                }}
-                                                                placeholder='Date of Birth (yyyy-mm-dd)'
-                                                            />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="countryInput" className="form-label">Country</Label>
-                                                            <Input type="text" className="form-control" id="countryInput"
-                                                                placeholder="Country" defaultValue="United States" />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="cityInput" className="form-label">City</Label>
-                                                            <Input type="text" className="form-control" id="cityInput"
-                                                                placeholder="City" defaultValue="California" />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="genderInput" className="form-label">
-                                                                Gender
-                                                            </Label>
-                                                            <select className="form-select" id="genderInput">
-                                                                <option value="" disabled>Select Gender</option>
-                                                                <option value="male">Male</option>
-                                                                <option value="female">Female</option>
-                                                            </select>
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="bloodGroupInput" className="form-label">
-                                                                Blood Group
-                                                            </Label>
-                                                            <select className="form-select" id="bloodGroupInput">
-                                                                <option value="" disabled>Blood Group</option>
-                                                                <option value="A+">A+</option>
-                                                                <option value="A-">A-</option>
-                                                                <option value="B+">B+</option>
-                                                                <option value="B-">B-</option>
-                                                                <option value="O+">O+</option>
-                                                                <option value="O-">O-</option>
-                                                                <option value="AB+">AB+</option>
-                                                                <option value="AB-">AB-</option>
-                                                            </select>
-                                                        </div>
-                                                    </Col>
+                                            <Formik
+                                                enableReinitialize
+                                                initialValues={initialValues}
+                                                validationSchema={validationSchema}
+                                                onSubmit={onSubmit}
+                                            >
+                                                <Form>
+                                                    <Row>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="firstnameInput" className="form-label">First
+                                                                    Name *</Label>
+                                                                <Field type="text" className="form-control" id="firstnameInput"
+                                                                    placeholder="Firstname" name='firstname' defaultValue={user ? user?.firstname : "Dave"} />
+                                                                <ErrorMessage name="firstname">
+                                                                    {(error) => <div className={"error"}>{error}</div>}
+                                                                </ErrorMessage>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="lastnameInput" className="form-label">Last
+                                                                    Name *</Label>
+                                                                <Field type="text" className="form-control" id="lastnameInput"
+                                                                    placeholder="Lastname" name='lastname' defaultValue={user ? user?.lastname : "Dave"} />
+                                                                <ErrorMessage name="lastname">
+                                                                    {(error) => <div className={"error"}>{error}</div>}
+                                                                </ErrorMessage>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="emailInput" className="form-label">Email
+                                                                    Address *</Label>
+                                                                <Field type="email" className="form-control" disabled id="emailInput"
+                                                                    placeholder="Email" name='email'
+                                                                    defaultValue={user ? user?.email : "daveadame@gmail.com"} />
+                                                                <ErrorMessage name="email">
+                                                                    {(error) => <div className={"error"}>{error}</div>}
+                                                                </ErrorMessage>
+                                                            </div>
+                                                        </Col>
 
-                                                    <Col lg={4}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="ageInput" className="form-label">
-                                                                Age
+                                                        <Col lg={2}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="monthsInput" className="form-label">DOB Month</Label>
+                                                                <Field as="select" name="DOBmonths" className="form-select" id="monthsInput">
+                                                                    <option selected disabled value="">Month</option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    {allMonths.map((month, index) => (
+                                                                        <option key={index} value={month}>
+                                                                            {month}
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={2}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="dayInput" className="form-label">
+                                                                    DOB Day
+                                                                </Label>
+                                                                <Field as="select" name="DOBdays" className="form-select" id="dayInput">
+                                                                    <option selected disabled value="">
+                                                                        Day
+                                                                    </option>
+                                                                    <option value="">Prefer Not to Say</option>
+                                                                    {Array.from({ length: 32 }, (_, index) => (
+                                                                        <option key={index} value={index}>
+                                                                            {index}
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={2}>
+                                                            <Label htmlFor="yearInput" className="form-label">
+                                                                DOB Year
                                                             </Label>
-                                                            <Input
-                                                                type="number"
-                                                                className="form-control"
-                                                                id="ageInput"
-                                                                placeholder="Age"
-                                                            />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={4}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="heightInput" className="form-label">
-                                                                Height (in cm)
-                                                            </Label>
-                                                            <Input
-                                                                type="number"
-                                                                className="form-control"
-                                                                id="heightInput"
-                                                                placeholder="Height (in cm)"
-                                                            />
-                                                        </div>
-                                                    </Col>
-                                                    <Col lg={4}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="weightInput" className="form-label">
-                                                                Weight (in kg)
-                                                            </Label>
-                                                            <Input
-                                                                type="number"
-                                                                className="form-control"
-                                                                id="weightInput"
-                                                                placeholder="Weight (in kg)"
-                                                            />
-                                                        </div>
-                                                    </Col>
+                                                            <Field
+                                                                as="select"
+                                                                id="yearInput"
+                                                                name="DOByears"
+                                                                className="form-select"
+                                                            >
+                                                                <option disabled selected value="">
+                                                                    Year
+                                                                </option>
+                                                                <option value="">
+                                                                    Prefer Not to Say
+                                                                </option>
+                                                                {Array.from({ length: 100 }, (_, index) => {
+                                                                    const year = new Date().getFullYear() - index;
+                                                                    return (
+                                                                        <option key={year} value={year}>
+                                                                            {year}
+                                                                        </option>
+                                                                    );
+                                                                })}
+                                                            </Field>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="countryInput" className="form-label">Country</Label>
+                                                                <Field as="select" name="country" className="form-select" id="countryInput">
+                                                                    <option selected disabled value="">Select Country</option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    {countries.map((country, index) => (
+                                                                        <option key={index} value={country}>
+                                                                            {country}
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="cityInput" className="form-label">City</Label>
+                                                                <Field type="text" className="form-control" name='city' id="cityInput"
+                                                                    placeholder="Enter City" />
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="genderInput" className="form-label">
+                                                                    Gender
+                                                                </Label>
+                                                                <Field as="select" name="gender" className="form-select" id="genderInput">
+                                                                    <option value="" selected disabled>Select Gender</option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    <option value="male">Male</option>
+                                                                    <option value="female">Female</option>
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={6}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="bloodGroupInput" className="form-label">
+                                                                    Blood Group
+                                                                </Label>
+                                                                <Field as="select" name="bloodGroup" className="form-select" id="bloodGroupInput">
+                                                                    <option value="" selected disabled>Blood Group</option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    <option value="A+">A+</option>
+                                                                    <option value="A-">A-</option>
+                                                                    <option value="B+">B+</option>
+                                                                    <option value="B-">B-</option>
+                                                                    <option value="O+">O+</option>
+                                                                    <option value="O-">O-</option>
+                                                                    <option value="AB+">AB+</option>
+                                                                    <option value="AB-">AB-</option>
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
 
-                                                    <Col lg={12}>
-                                                        <div className="hstack gap-2 justify-content-end">
-                                                            <button type="button"
-                                                                className="btn btn-primary">Updates</button>
-                                                            <button type="button"
-                                                                className="btn btn-soft-info">Cancel</button>
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                            </Form>
+                                                        <Col lg={4}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="ageInput" className="form-label">
+                                                                    Age
+                                                                </Label>
+                                                                <Field as="select" name="age" className="form-select" id="ageInput">
+                                                                    <option selected disabled value="">
+                                                                        Select Age
+                                                                    </option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    {ages.map((age) => (
+                                                                        <option key={age} value={age}>
+                                                                            {age}
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={4}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="heightInput" className="form-label">
+                                                                    Height (in cm)
+                                                                </Label>
+                                                                <Field as="select" name="height" className="form-select" id="heightInput">
+                                                                    <option selected disabled value="">
+                                                                        Select Height (in cm)
+                                                                    </option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    {heights.map((height, index) => (
+                                                                        <option key={index} value={height}>
+                                                                            {height} cm
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+
+                                                        <Col lg={4}>
+                                                            <div className="mb-3">
+                                                                <Label htmlFor="weightInput" className="form-label">
+                                                                    Weight (in kg)
+                                                                </Label>
+                                                                <Field as="select" name="weight" className="form-select" id="weightInput">
+                                                                    <option selected disabled value="">
+                                                                        Select Weight (in kg)
+                                                                    </option>
+                                                                    <option value="">
+                                                                        Prefer Not to Say
+                                                                    </option>
+                                                                    {weights.map((weight, index) => (
+                                                                        <option key={index} value={weight}>
+                                                                            {weight} kg
+                                                                        </option>
+                                                                    ))}
+                                                                </Field>
+                                                            </div>
+                                                        </Col>
+                                                        <Col lg={12}>
+                                                            <div className="hstack gap-2 justify-content-end">
+                                                                <button type="submit"
+                                                                    className="btn btn-primary">Update</button>
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                </Form>
+                                            </Formik>
                                         </TabPane>
 
                                         <TabPane tabId="2">
-                                            <Form>
+                                            {/* <Form>
                                                 <Row className="g-2">
                                                     <Col lg={4}>
                                                         <div>
@@ -348,7 +534,7 @@ const Profile = () => {
 
                                                 </Row>
 
-                                            </Form>
+                                            </Form> */}
                                             <div className="mt-4 mb-3 border-bottom pb-2">
                                                 <div className="float-end">
                                                     <Link to="#" className="link-primary">All Logout</Link>
@@ -701,7 +887,7 @@ const Profile = () => {
                     </Row>
                 </Container>
             </div>
-        </React.Fragment>
+        </React.Fragment >
     );
 };
 

@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { USER_LOGIN, USER_REGISTER, SEND_OTP, CONFIRM_OTP,UPDATE_PASSWORD } from "../../helpers/url_helper";
+import { USER_LOGIN, USER_REGISTER, SEND_OTP, CONFIRM_OTP, UPDATE_PASSWORD, UPDATE_PROFILE } from "../../helpers/url_helper";
 import axios from "axios";
 
 //LOGIN
@@ -15,6 +15,7 @@ const getLogin = async (loginInfo, navigate) => {
         pending: "Signing In...",
       }
     );
+    console.log(response);
     const { status, auth } = response;
     if (status === true) {
       sessionStorage?.setItem("authUser", JSON?.stringify(auth));
@@ -25,7 +26,8 @@ const getLogin = async (loginInfo, navigate) => {
     } else {
       toast.error(response?.message);
     }
-    return response;
+  
+    return response?.user;
   } catch (error) {
     toast.error(error);
   }
@@ -163,8 +165,38 @@ const resetPassword = async (passwordInfo, navigate) => {
         autoClose: 3000
       });
     }
+    
+    return response?.data;
   } catch (error) {
     toast.error("Failed to Update Password!");
+  }
+};
+
+//UPDATE PROFILE
+const updateProfile = async (profileInfo,userId) => {
+  try {
+    const response = await toast.promise(
+      axios.put(`${process.env.REACT_APP_BASE_URL}/${UPDATE_PROFILE}/${userId}`, profileInfo, {
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+      {
+        pending: "Updating Profile...",
+      }
+    );
+    console.log(response?.data);
+
+    if (response?.status === true) {
+      toast.success(response?.message)
+    } else {
+      toast.error(response?.message, {
+        autoClose: 3000
+      });
+    }
+    return response?.data;
+  } catch (error) {
+    toast.error("Failed to Update Profile!");
   }
 };
 
@@ -193,5 +225,6 @@ export const service = {
   sendOTP,
   confirmOTP,
   resendOTP,
-  resetPassword
+  resetPassword,
+  updateProfile
 };

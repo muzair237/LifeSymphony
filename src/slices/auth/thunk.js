@@ -71,6 +71,18 @@ export const resetPassword = createAsyncThunk(
     }
   }
 );
+// UPDATE PROFILE
+export const updateProfile = createAsyncThunk(
+  "update/updateProfile",
+  async ({ profileInfo, userId }) => {
+    try {
+      const resp = await service.updateProfile(profileInfo, userId);
+      return resp;
+    } catch (error) {
+      return "An Error Occurred in Updating Profile!";
+    }
+  }
+);
 
 export const logoutUser = createAsyncThunk("logout/logoutUser", async ({navigate}) => {
   try {
