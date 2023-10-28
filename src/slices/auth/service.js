@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { USER_LOGIN, USER_REGISTER } from "../../helpers/url_helper";
+import { USER_LOGIN, USER_REGISTER, SEND_OTP, CONFIRM_OTP,UPDATE_PASSWORD } from "../../helpers/url_helper";
 import axios from "axios";
 
 //LOGIN
@@ -60,6 +60,114 @@ const getSignedUp = async (signupInfo, navigate) => {
   }
 };
 
+//SEND OTP
+const sendOTP = async (otpAddress, navigate) => {
+  try {
+    const response = await toast.promise(
+      axios.post(`${process.env.REACT_APP_BASE_URL}/${SEND_OTP}`, otpAddress, {
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+      {
+        pending: "Sending OTP...",
+      }
+    );
+    console.log(response);
+    const { status } = response;
+    if (status === true) {
+      sessionStorage?.setItem("otpAddress", otpAddress?.email);
+      toast.success(response?.message)
+      navigate('/otpValidation');
+    } else {
+      toast.error(response?.message, {
+        autoClose: 3000
+      });
+    }
+  } catch (error) {
+    toast.error("Failed to Send OTP!");
+  }
+};
+
+//CONFIRM OTP
+const confirmOTP = async (otpInfo, navigate) => {
+  try {
+    const response = await toast.promise(
+      axios.post(`${process.env.REACT_APP_BASE_URL}/${CONFIRM_OTP}`, otpInfo, {
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+      {
+        pending: "Confirming OTP...",
+      }
+    );
+    if (response?.status === true) {
+      toast.success(response?.message)
+      sessionStorage.setItem("otpConfirmed", true);
+      navigate('/updatePassword');
+    } else {
+      toast.error(response?.message, {
+        autoClose: 3000
+      });
+    }
+  } catch (error) {
+    toast.error("Failed to Verify OTP!");
+  }
+};
+
+//RESEND OTP
+const resendOTP = async (otpAddress) => {
+  try {
+    const response = await toast.promise(
+      axios.post(`${process.env.REACT_APP_BASE_URL}/${SEND_OTP}`, otpAddress, {
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+      {
+        pending: "Resending OTP...",
+      }
+    );
+    if (response?.status === true) {
+      toast.success("OTP Resent Successfully.")
+    } else {
+      toast.error("Failed to resend OTP!", {
+        autoClose: 3000
+      });
+    }
+  } catch (error) {
+    toast.error("Failed to Resend OTP!");
+  }
+};
+
+//RESET PASSWORD
+const resetPassword = async (passwordInfo, navigate) => {
+  try {
+    const response = await toast.promise(
+      axios.post(`${process.env.REACT_APP_BASE_URL}/${UPDATE_PASSWORD}`, passwordInfo, {
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+      {
+        pending: "Updating Password...",
+      }
+    );
+    if (response?.status === true) {
+      toast.success(response?.message)
+      sessionStorage.clear();
+      navigate("/login")
+    } else {
+      toast.error(response?.message, {
+        autoClose: 3000
+      });
+    }
+  } catch (error) {
+    toast.error("Failed to Update Password!");
+  }
+};
+
 const getLogout = async (navigate) => {
   try {
     toast.success("Logged Out");
@@ -81,5 +189,9 @@ const getLogout = async (navigate) => {
 export const service = {
   getLogin,
   getSignedUp,
-  getLogout
+  getLogout,
+  sendOTP,
+  confirmOTP,
+  resendOTP,
+  resetPassword
 };

@@ -145,9 +145,9 @@ const SignUp = () => {
                                                 </div>
 
                                                 <div className="mt-4">
-                                                    <Button color="success"
+                                                    <Button color="dark"
                                                         disabled={loading}
-                                                        className="btn btn-success w-100" type="submit">
+                                                        className="btn btn-dark w-100" type="submit">
                                                         Sign Up
                                                     </Button>
                                                 </div>

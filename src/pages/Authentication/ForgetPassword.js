@@ -4,7 +4,7 @@ import { Row, Col, Alert, Card, CardBody, Container, Label } from "reactstrap";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Formik Validation
 import * as Yup from "yup";
@@ -13,9 +13,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 // import images
 // import profile from "../../assets/images/bg.png";
 import logoLight from "../../assets/images/Login/logo.png"
-import withRouter from "../../Components/Common/withRouter";
+import withAuthProtection from "../../Components/Common/withAuthProtection";
+import { sendOTP } from "../../slices/auth/thunk";
+
 
 const ForgetPassword = props => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector(state => ({
     loading: state.Login.loading,
@@ -30,11 +33,10 @@ const ForgetPassword = props => {
       .email("Please Enter a Valid Email!"),
   });
   const onSubmit = (values) => {
-    const forgetPasswordInfo = {
+    const otpAddress = {
       email: values.email,
     };
-    console.log(forgetPasswordInfo);
-    // dispatch(loginUserReal({ loginInfo: loginInfo, navigate }));
+    dispatch(sendOTP({ otpAddress, navigate }));
   };
 
   document.title = "LifeSymphony | Forget Password";
@@ -98,7 +100,7 @@ const ForgetPassword = props => {
                           </ErrorMessage>
                         </div>
                         <div className="text-center mt-4">
-                          <button className="btn btn-success w-100" type="submit">
+                          <button className="btn btn-dark w-100" color="dark" disabled={loading} type="submit">
                             {loading ? "Sending OTP..." : "Send OTP"}
                           </button>
                         </div>
@@ -119,4 +121,4 @@ const ForgetPassword = props => {
   );
 };
 
-export default withRouter(ForgetPassword);
+export default withAuthProtection(ForgetPassword);

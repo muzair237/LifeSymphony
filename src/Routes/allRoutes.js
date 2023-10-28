@@ -7,7 +7,9 @@ import { Navigate } from "react-router-dom";
 //login
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
-import ForgetPassword from "../pages/Authentication/ForgotPassword";
+import ForgetPassword from "../pages/Authentication/ForgetPassword";
+import OTPValidation from "../pages/Authentication/OTPValidation";
+import Updatepassword from "../pages/Authentication/UpdatePassword";
 
 //Dashboard
 import Dashboard from "../pages/Dashboard/Dashoboard";
@@ -57,6 +59,8 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/signUp", component: <SignUp /> },
   { path: "/forgetPassword", component: <ForgetPassword /> },
+  { path: "/otpValidation", component: <OTPValidation /> },
+  { path: "/updatepassword", component: <Updatepassword /> },
 
   //AuthenticationInner pages
   // { path: "/auth-404-basic", component: <Basic404 /> },

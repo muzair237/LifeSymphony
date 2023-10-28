@@ -83,7 +83,7 @@ const Login = () => {
                         </div>
                         <div className="mb-3">
                           <div className="float-end">
-                            <Link to="/forgot-password" className="text-muted">Forgot password?</Link>
+                            <Link to="/forgetPassword" className="text-muted">Forgot password?</Link>
                           </div>
                           <Label className="form-label" htmlFor="password-input">Password</Label>
                           <div className="position-relative auth-pass-inputgroup mb-3">
@@ -106,9 +106,9 @@ const Login = () => {
                         </div>
 
                         <div className="mt-4">
-                          <Button color="success"
+                          <Button color="dark"
                             disabled={loading}
-                            className="btn btn-success w-100" type="submit">
+                            className="btn btn-dark w-100" type="submit">
                             Sign In
                           </Button>
                         </div>
