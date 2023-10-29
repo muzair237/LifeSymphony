@@ -28,7 +28,7 @@ const Logout = (props) => {
 
   useEffect(() => {
     dispatch(logoutUser());
-    sessionStorage.removeItem("authUser"); // Remove the authUser item from sessionStorage
+    sessionStorage.clear(); // Remove the authUser item from sessionStorage
     toast.success("Logged Out Successfully!")
     clearCookies();
     setTimeout(() => {
@@ -37,7 +37,7 @@ const Logout = (props) => {
   }, [dispatch]);
 
   if (isUserLogout) {
-    sessionStorage.removeItem("authUser");
+    sessionStorage.clear();
     clearCookies();
     return <Navigate to="/login" />;
   }

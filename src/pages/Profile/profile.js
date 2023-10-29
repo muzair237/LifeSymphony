@@ -30,7 +30,7 @@ const Profile = () => {
     const [userInfo, setUserInfo] = useState();
     document.title = "LifeSymphony | Profile    ";
     const user = useSelector((state) => state?.Login?.user);
-    const userId = user?._id;
+    const userId = useSelector((state)=> state?.Login?.user?._id);
     const [activeTab, setActiveTab] = useState("1");
     const [selectedMonth, setSelectedMonth] = useState('');
 
@@ -38,12 +38,12 @@ const Profile = () => {
         if (activeTab !== tab) setActiveTab(tab);
     };
     const initialValues = {
-        firstname: user ? user?.firstname : '',
-        lastname: user ? user?.lastname : '',
-        email: user ? user?.email : '',
-        DOBmonths: user ? user?.DOBmonths : "",
-        DOBdays: user ? user?.DOBdays : "",
-        DOByears: user ? user?.DOByears : "",
+        firstname: user?.firstname ? user?.firstname : '',
+        lastname: user?.lastname ? user?.lastname : '',
+        email: user?.email ? user?.email : '',
+        DOBmonths: user?.DOBmonths ? user?.DOBmonths : "",
+        DOBdays: user?.DOBdays ? user?.DOBdays : "",
+        DOByears: user?.DOByears ? user?.DOByears : "",
         country: user?.country ? user?.country : '',
         city: user?.city ? user?.city : "",
         gender: user?.gender ? user?.gender : "",
@@ -53,8 +53,8 @@ const Profile = () => {
         weight: user?.weight ? user?.weight : "",
     };
     const validationSchema = yup.object().shape({
-        firstname: yup.string().min(3,"First Name should be atleast 3 Characters").required('First name is required'),
-        lastname: yup.string().min(3,"Last Name should be atleast 3 Characters").required('Last name is required'),
+        firstname: yup.string().min(3, "First Name should be atleast 3 Characters").required('First name is required'),
+        lastname: yup.string().min(3, "Last Name should be atleast 3 Characters").required('Last name is required'),
         email: yup.string().email('Invalid email').required('Email is required'),
         DOBmonths: yup.string().nullable(),
         DOBdays: yup.string().nullable(),
@@ -83,9 +83,7 @@ const Profile = () => {
             height: values.height,
             weight: values.weight,
         };
-        console.log(userId);
-        console.log("profileL: ",profileInfo);
-        dispatch(updateProfile({profileInfo,userId}));
+        dispatch(updateProfile({ profileInfo, userId }));
     };
 
     const allMonths = [
@@ -102,6 +100,31 @@ const Profile = () => {
         'November',
         'December'
     ];
+
+    // Extract the fields from the user object
+    const {
+        firstname,
+        lastname,
+        email,
+        DOBmonths,
+        DOBdays,
+        DOByears,
+        country,
+        city,
+        gender,
+        bloodGroup,
+        age,
+        height,
+        weight
+    } = user || {};
+
+    // Count the number of fields that are not empty
+    const filledFieldCount = [firstname, lastname, email, DOBmonths, DOBdays, DOByears, country, city, gender, bloodGroup, age, height, weight].filter(value => value !== '').length;
+
+    // Calculate the progress percentage
+    const totalFieldCount = 13; // Total number of fields
+    const progressPercentagee = Math.floor((filledFieldCount / totalFieldCount) * 100);
+
     useEffect(() => {
         setUserInfo(user);
     }, [userInfo])
@@ -132,7 +155,7 @@ const Profile = () => {
                                             {/* <img src={avatar1}
                                                 className="rounded-circle avatar-xl img-thumbnail user-profile-image"
                                                 alt="user-profile" /> */}
-                                            <div className="avatar-xs p-0 rounded-circle profile-photo-edit">
+                                            {/* <div className="avatar-xs p-0 rounded-circle profile-photo-edit">
                                                 <Input id="profile-img-file-input" type="file"
                                                     className="profile-img-file-input" />
                                                 <Label htmlFor="profile-img-file-input"
@@ -141,7 +164,7 @@ const Profile = () => {
                                                         <i className="ri-camera-fill"></i>
                                                     </span>
                                                 </Label>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <h5 className="fs-16 mb-1">{user ? user?.firstname + user?.lastname : null}</h5>
                                         <p className="text-muted mb-0">{user ? user?.email : null}</p>
@@ -161,9 +184,9 @@ const Profile = () => {
                                         </div>
                                     </div>
                                     <div className="progress animated-progress custom-progress progress-label">
-                                        <div className="progress-bar bg-info" role="progressbar" style={{ "width": "30%" }}
-                                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                            <div className="label">30%</div>
+                                        <div className="progress-bar bg-info" role="progressbar" style={{ width: `${progressPercentagee}%` }}
+                                            aria-valuenow={`${progressPercentagee}`} aria-valuemin="0" aria-valuemax="100">
+                                            <div className="label">{progressPercentagee}%</div>
                                         </div>
                                     </div>
                                 </CardBody>
@@ -486,7 +509,7 @@ const Profile = () => {
                                         </TabPane>
 
                                         <TabPane tabId="2">
-                                            {/* <Form>
+                                            {/* <form>
                                                 <Row className="g-2">
                                                     <Col lg={4}>
                                                         <div>
@@ -534,7 +557,7 @@ const Profile = () => {
 
                                                 </Row>
 
-                                            </Form> */}
+                                            </form> */}
                                             <div className="mt-4 mb-3 border-bottom pb-2">
                                                 <div className="float-end">
                                                     <Link to="#" className="link-primary">All Logout</Link>
