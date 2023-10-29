@@ -20,8 +20,8 @@ import Tasks from "../pages/Tasks/tasks"
 //Analytics
 import Analytics from "../pages/Analytics/analytics";
 
-//Reports
-import Reports from "../pages/Reports/reports";
+//Body Calculator
+import BodyCalculator from "../pages/Body Calculator/BodyCalculator";
 
 //Profile
 import Profile from "../pages/Profile/Profile";
@@ -40,7 +40,7 @@ const authProtectedRoutes = [
   { path: "/index", component: <Dashboard /> },
   { path: "/tasks", component: <Tasks /> },
   { path: "/analytics", component: <Analytics /> },
-  { path: "/reports", component: <Reports /> },
+  { path: "/bodyCalculator", component: <BodyCalculator /> },
   { path: "/profile", component: <Profile /> },
  
 

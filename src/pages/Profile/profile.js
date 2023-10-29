@@ -191,7 +191,7 @@ const Profile = () => {
                                     </div>
                                 </CardBody>
                             </Card>
-                            <Card>
+                            {/* <Card>
                                 <CardBody>
                                     <div className="d-flex align-items-center mb-4">
                                         <div className="flex-grow-1">
@@ -239,7 +239,7 @@ const Profile = () => {
                                             placeholder="Username" defaultValue="Advance Dave" />
                                     </div>
                                 </CardBody>
-                            </Card>
+                            </Card> */}
                         </Col>
 
                         <Col xxl={9}>
