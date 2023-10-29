@@ -7,7 +7,7 @@ const Navdata = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isGoals, setIsGoals] = useState(false);
   const [isDietPlan, setIsDietPlan] = useState(false);
-  const [isMilestones, setIsMilestones] = useState(false);
+  const [isBodyCalculator, setIsBodyCalculator] = useState(false);
   const [isAnalytics, setIsAnalytics] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isRole, setIsRole] = useState(false);
@@ -56,43 +56,17 @@ const Navdata = () => {
         setIscurrentState("Dashboard");
         updateIconSidebar(e);
       },
-    },
+    },  
     {
-      id: "dietPlan",
-      label: "Diet Plan",
-      icon: "ri-file-list-fill",
-      link: "/dietPlan",
-      stateVariables: isDietPlan,
+      id: "bodyCalculator",
+      label: "Body Calculator",
+      icon: "ri-calculator-fill",
+      link: "/bodyCalculator",
+      stateVariables: isBodyCalculator,
       click: function (e) {
         e.preventDefault();
-        setIsAnalytics(!isDietPlan);
-        setIscurrentState("DietPlan");
-        updateIconSidebar(e);
-      },
-    },
-    {
-      id: "Goals",
-      label: "Health Goals",
-      icon: "ri-flag-2-fill",
-      link: "/healthGoals",
-      stateVariables: isGoals,
-      click: function (e) {
-        e.preventDefault();
-        setIsTasks(!isGoals);
-        setIscurrentState("Goals");
-        updateIconSidebar(e);
-      },
-    },
-    {
-      id: "milestones",
-      label: "Milestones",
-      icon: "ri-award-fill",
-      link: "/milestones",
-      stateVariables: isMilestones,
-      click: function (e) {
-        e.preventDefault();
-        setIsReports(!isMilestones);
-        setIscurrentState("Milestones");
+        setIsReports(!isBodyCalculator);
+        setIscurrentState("BodyCalculator");
         updateIconSidebar(e);
       },
     },
