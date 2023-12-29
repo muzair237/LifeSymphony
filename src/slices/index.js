@@ -6,11 +6,13 @@ import LayoutReducer from "./layouts/reducer";
 // Authentication
 import LoginReducer from "./auth/reducer";
 
-//Benchmark
+// Quote
+import QuoteReducer from "./quotes/reducer";
 
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   Login: LoginReducer,
+  Quote: QuoteReducer,
 });
 
 export default rootReducer;

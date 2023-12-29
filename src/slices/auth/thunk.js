@@ -1,7 +1,6 @@
 import { service } from "./service";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-
 export const loginUserReal = createAsyncThunk(
   "login/loginUserReal",
   async ({ loginInfo, navigate }) => {
@@ -83,10 +82,24 @@ export const updateProfile = createAsyncThunk(
     }
   }
 );
+// UPDATE PROFILE PICTURE
+export const editProfilePicture = createAsyncThunk(
+  "update/editProfilePicture",
+  async ({ payload }) => {
+    try {
+      const resp = await service.editProfilePicture(payload);
+      return resp;
+    } catch (error) {
+      return "An Error Occurred in Updating Profile Picture!";
+    }
+  }
+);
 
-export const logoutUser = createAsyncThunk("logout/logoutUser", async ({navigate}) => {
-  try {
-    return await service.getLogout(navigate);
-  } catch (error) {}
-});
-
+export const logoutUser = createAsyncThunk(
+  "logout/logoutUser",
+  async ({ navigate }) => {
+    try {
+      return await service.getLogout(navigate);
+    } catch (error) {}
+  }
+);

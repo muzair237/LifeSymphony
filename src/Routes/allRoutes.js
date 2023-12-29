@@ -4,8 +4,9 @@ import { Navigate } from "react-router-dom";
 //AuthenticationInner pages
 // import Basic404 from "../pages/Authentication/";
 
-//login
+//Auth
 import Login from "../pages/Authentication/Login";
+import SignUp from "../pages/Authentication/SignUp";
 import Logout from "../pages/Authentication/Logout";
 import ForgetPassword from "../pages/Authentication/ForgetPassword";
 import OTPValidation from "../pages/Authentication/OTPValidation";
@@ -14,23 +15,14 @@ import Updatepassword from "../pages/Authentication/UpdatePassword";
 //Dashboard
 import Dashboard from "../pages/Dashboard/Dashoboard";
 
-//Tasks
-import Tasks from "../pages/Tasks/tasks"
-
-//Analytics
-import Analytics from "../pages/Analytics/analytics";
-
 //Body Calculator
 import BodyCalculator from "../pages/Body Calculator/BodyCalculator";
 
 //Profile
 import Profile from "../pages/Profile/Profile";
-import SignUp from "../pages/Authentication/SignUp";
 
-
-
-
-
+//Daily Quote
+import DailyQuote from "../pages/Daily Quote/DailyQuote";
 
 //AuthenticationInner pages
 // import Basic404 from "../pages/AuthenticationInner/Errors/Basic404";
@@ -38,11 +30,9 @@ import SignUp from "../pages/Authentication/SignUp";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/index", component: <Dashboard /> },
-  { path: "/tasks", component: <Tasks /> },
-  { path: "/analytics", component: <Analytics /> },
   { path: "/bodyCalculator", component: <BodyCalculator /> },
   { path: "/profile", component: <Profile /> },
- 
+  { path: "/dailyQuote", component: <DailyQuote /> },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

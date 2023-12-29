@@ -7,7 +7,8 @@ import {
   confirmOTP,
   resendOTP,
   resetPassword,
-  updateProfile
+  updateProfile,
+  editProfilePicture,
 } from "./thunk";
 export const initialState = {
   user: {},
@@ -20,9 +21,7 @@ export const initialState = {
 const loginSlice = createSlice({
   name: "login",
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
 
@@ -128,6 +127,19 @@ const loginSlice = createSlice({
         state.isError = true;
         state.loading = false;
       })
+      //EDIT PROFILE PICTURE REDUCERS
+      .addCase(editProfilePicture.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editProfilePicture.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(editProfilePicture.rejected, (state) => {
+        state.errorMsg = "An Error Occurred in Udating Profile Picture!";
+        state.isError = true;
+        state.loading = false;
+      })
 
       //LOGOUT
       .addCase(logoutUser.pending, (state, action) => {
@@ -147,7 +159,7 @@ const loginSlice = createSlice({
         state.loading = false;
         state.isUserLogout = false;
         state.errorMsg = true;
-      })
+      });
   },
 });
 

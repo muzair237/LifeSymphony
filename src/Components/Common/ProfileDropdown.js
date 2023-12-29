@@ -29,9 +29,10 @@ const ProfileDropdown = () => {
         toggle={toggleProfileDropdown}
         className="ms-sm-3 header-item topbar-user"
       >
-         <DropdownToggle tag="button" type="button" className="btn">
+        <DropdownToggle tag="button" type="button" className="btn">
           <span className="d-flex align-items-center">
             <img
+              style={{ objectFit: "cover" }}
               className="rounded-circle header-profile-user"
               src={user?.profilePicture}
               alt="Header Avatar"

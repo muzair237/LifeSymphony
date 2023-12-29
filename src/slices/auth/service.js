@@ -1,5 +1,13 @@
 import { toast } from "react-toastify";
-import { USER_LOGIN, USER_REGISTER, SEND_OTP, CONFIRM_OTP, UPDATE_PASSWORD, UPDATE_PROFILE } from "../../helpers/url_helper";
+import {
+  USER_LOGIN,
+  USER_REGISTER,
+  SEND_OTP,
+  CONFIRM_OTP,
+  UPDATE_PASSWORD,
+  UPDATE_PROFILE,
+  EDIT_PROFILE_PICTURE,
+} from "../../helpers/url_helper";
 import axios from "axios";
 
 //LOGIN
@@ -26,7 +34,7 @@ const getLogin = async (loginInfo, navigate) => {
     } else {
       toast.error(response?.message);
     }
-  
+
     return response?.user;
   } catch (error) {
     toast.error(error);
@@ -37,11 +45,15 @@ const getLogin = async (loginInfo, navigate) => {
 const getSignedUp = async (signupInfo, navigate) => {
   try {
     const response = await toast.promise(
-      axios.post(`${process.env.REACT_APP_BASE_URL}/${USER_REGISTER}`, signupInfo, {
-        headers: {
-          Accept: "application/json",
-        },
-      }),
+      axios.post(
+        `${process.env.REACT_APP_BASE_URL}/${USER_REGISTER}`,
+        signupInfo,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      ),
       {
         pending: "Signing Up...",
       }
@@ -79,11 +91,11 @@ const sendOTP = async (otpAddress, navigate) => {
     const { status } = response;
     if (status === true) {
       sessionStorage?.setItem("otpAddress", otpAddress?.email);
-      toast.success(response?.message)
-      navigate('/otpValidation');
+      toast.success(response?.message);
+      navigate("/otpValidation");
     } else {
       toast.error(response?.message, {
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
   } catch (error) {
@@ -105,12 +117,12 @@ const confirmOTP = async (otpInfo, navigate) => {
       }
     );
     if (response?.status === true) {
-      toast.success(response?.message)
+      toast.success(response?.message);
       sessionStorage.setItem("otpConfirmed", true);
-      navigate('/updatePassword');
+      navigate("/updatePassword");
     } else {
       toast.error(response?.message, {
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
   } catch (error) {
@@ -132,10 +144,10 @@ const resendOTP = async (otpAddress) => {
       }
     );
     if (response?.status === true) {
-      toast.success("OTP Resent Successfully.")
+      toast.success("OTP Resent Successfully.");
     } else {
       toast.error("Failed to resend OTP!", {
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
   } catch (error) {
@@ -147,25 +159,31 @@ const resendOTP = async (otpAddress) => {
 const resetPassword = async (passwordInfo, navigate) => {
   try {
     const response = await toast.promise(
-      axios.post(`${process.env.REACT_APP_BASE_URL}/${UPDATE_PASSWORD}`, passwordInfo, {
-        headers: {
-          Accept: "application/json",
-        },
-      }),
+      axios.post(
+        `${process.env.REACT_APP_BASE_URL}/${UPDATE_PASSWORD}`,
+        passwordInfo,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      ),
       {
         pending: "Updating Password...",
       }
     );
     if (response?.status === true) {
-      toast.success(response?.message)
-      sessionStorage.clear();
-      navigate("/login")
+      toast.success(response?.message);
+      if (navigate) {
+        sessionStorage.clear();
+        navigate("/login");
+      }
     } else {
       toast.error(response?.message, {
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
-    
+
     return response?.data;
   } catch (error) {
     toast.error("Failed to Update Password!");
@@ -173,14 +191,18 @@ const resetPassword = async (passwordInfo, navigate) => {
 };
 
 //UPDATE PROFILE
-const updateProfile = async (profileInfo,userId) => {
+const updateProfile = async (profileInfo, userId) => {
   try {
     const response = await toast.promise(
-      axios.put(`${process.env.REACT_APP_BASE_URL}/${UPDATE_PROFILE}/${userId}`, profileInfo, {
-        headers: {
-          Accept: "application/json",
-        },
-      }),
+      axios.put(
+        `${process.env.REACT_APP_BASE_URL}/${UPDATE_PROFILE}/${userId}`,
+        profileInfo,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      ),
       {
         pending: "Updating Profile...",
       }
@@ -188,15 +210,45 @@ const updateProfile = async (profileInfo,userId) => {
     console.log(response?.data);
 
     if (response?.status === true) {
-      toast.success(response?.message)
+      toast.success(response?.message);
     } else {
       toast.error(response?.message, {
-        autoClose: 3000
+        autoClose: 3000,
       });
     }
     return response?.data;
   } catch (error) {
     toast.error("Failed to Update Profile!");
+  }
+};
+
+//EDIT PROFILE PICTURE
+const editProfilePicture = async (payload) => {
+  try {
+    const response = await toast.promise(
+      axios.post(
+        `${process.env.REACT_APP_BASE_URL}/${EDIT_PROFILE_PICTURE}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      ),
+      {
+        pending: "Updating Profile Picture...",
+      }
+    );
+    if (response?.status === true) {
+      toast.success(response?.message);
+    } else {
+      toast.error(response?.message, {
+        autoClose: 3000,
+      });
+    }
+    return response?.user;
+  } catch (error) {
+    toast.error("Failed to Update Profile Picture!");
   }
 };
 
@@ -226,5 +278,6 @@ export const service = {
   confirmOTP,
   resendOTP,
   resetPassword,
-  updateProfile
+  updateProfile,
+  editProfilePicture,
 };
