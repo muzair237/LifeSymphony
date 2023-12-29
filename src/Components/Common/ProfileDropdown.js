@@ -14,7 +14,6 @@ import avatar1 from "../../assets/images/users/avatar-1.jpg";
 const ProfileDropdown = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.Login?.user);
-  console.log(user);
 
   const [userName, setUserName] = useState("Dave");
 

@@ -24,6 +24,9 @@ import Profile from "../pages/Profile/Profile";
 //Daily Quote
 import DailyQuote from "../pages/Daily Quote/DailyQuote";
 
+//Blogs
+import Blogs from "../pages/Blogs/HealthWisdom";
+
 //AuthenticationInner pages
 // import Basic404 from "../pages/AuthenticationInner/Errors/Basic404";
 
@@ -33,6 +36,7 @@ const authProtectedRoutes = [
   { path: "/bodyCalculator", component: <BodyCalculator /> },
   { path: "/profile", component: <Profile /> },
   { path: "/dailyQuote", component: <DailyQuote /> },
+  { path: "/healthWisdom", component: <Blogs /> },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

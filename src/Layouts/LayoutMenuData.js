@@ -8,6 +8,7 @@ const Navdata = () => {
   const [isBodyCalculator, setIsBodyCalculator] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [dailyQuote, setDailyQuote] = useState(false);
+  const [blogs, setBlogs] = useState(false);
   const [isRole, setIsRole] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
@@ -63,7 +64,7 @@ const Navdata = () => {
       stateVariables: isBodyCalculator,
       click: function (e) {
         e.preventDefault();
-        setIsReports(!isBodyCalculator);
+        setIsBodyCalculator(!isBodyCalculator);
         setIscurrentState("BodyCalculator");
         updateIconSidebar(e);
       },
@@ -76,8 +77,21 @@ const Navdata = () => {
       stateVariables: dailyQuote,
       click: function (e) {
         e.preventDefault();
-        setIsProfile(!dailyQuote);
+        setDailyQuote(!dailyQuote);
         setIscurrentState("dailyQuote");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "healthWisdom",
+      label: "Health Wisdom",
+      icon: "ri-quill-pen-fill",
+      link: "/healthWisdom",
+      stateVariables: blogs,
+      click: function (e) {
+        e.preventDefault();
+        setBlogs(!blogs);
+        setIscurrentState("blogs");
         updateIconSidebar(e);
       },
     },

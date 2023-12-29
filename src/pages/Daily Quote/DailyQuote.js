@@ -37,19 +37,22 @@ const DailyQuote = () => {
       <div className="BreadCrumb mt-3">
         <BreadCrumb style={{ width: "98%", marginLeft: "12px" }} />
       </div>
-      <div style={divStyle} className="row mt-3">
-        <div className="welcomeText text-center">
-          <h4>Welcome to Daily Quote Section!</h4>
-          <p className="fs-5">
-            Explore a daily dose of inspiration for your well-being! Our Daily
-            Quote Section brings you a curated collection of insightful and
-            motivational health quotes. Discover words that resonate with your
-            journey to a healthier lifestyle. Let these quotes serve as
-            reminders to prioritize self-care, embrace positivity, and make
-            choices that contribute to your overall well-being.{" "}
-          </p>
+      <header style={divStyle} className="py-0 bg-light border-bottom mb-4">
+        <div className="container">
+          <div className="text-center my-5 pt-3">
+            <h1 className="fw-bolder">Welcome to Daily Quote Section!</h1>
+            <p className="lead mb-0">
+              Explore a daily dose of inspiration for your well-being! Our{" "}
+              <strong>Daily Quote</strong> Section brings you a curated
+              collection of insightful and motivational health quotes. Discover
+              words that resonate with your journey to a healthier lifestyle.
+              Let these quotes serve as reminders to prioritize self-care,
+              embrace positivity, and make choices that contribute to your
+              overall well-being.{" "}
+            </p>
+          </div>
         </div>
-      </div>
+      </header>
       <hr />
       <div className="row" style={{ margin: "50px 0 0 420px" }}>
         <div className="card" style={cardStyle}>

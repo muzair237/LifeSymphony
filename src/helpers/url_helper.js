@@ -11,3 +11,6 @@ export const EDIT_PROFILE_PICTURE = "profilePicture";
 
 //QUOTE
 export const GET_QUOTE = "quote";
+
+//BLOGS
+export const GET_BLOGS = "blog";
