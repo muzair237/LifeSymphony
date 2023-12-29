@@ -5,11 +5,9 @@ const Navdata = () => {
   const history = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
-  const [isGoals, setIsGoals] = useState(false);
-  const [isDietPlan, setIsDietPlan] = useState(false);
   const [isBodyCalculator, setIsBodyCalculator] = useState(false);
-  const [isAnalytics, setIsAnalytics] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
+  const [dailyQuote, setDailyQuote] = useState(false);
   const [isRole, setIsRole] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
@@ -56,7 +54,7 @@ const Navdata = () => {
         setIscurrentState("Dashboard");
         updateIconSidebar(e);
       },
-    },  
+    },
     {
       id: "bodyCalculator",
       label: "Body Calculator",
@@ -67,6 +65,19 @@ const Navdata = () => {
         e.preventDefault();
         setIsReports(!isBodyCalculator);
         setIscurrentState("BodyCalculator");
+        updateIconSidebar(e);
+      },
+    },
+    {
+      id: "dailyQuote",
+      label: "Daily Quote",
+      icon: "bx bxs-quote-alt-left",
+      link: "/dailyQuote",
+      stateVariables: dailyQuote,
+      click: function (e) {
+        e.preventDefault();
+        setIsProfile(!dailyQuote);
+        setIscurrentState("dailyQuote");
         updateIconSidebar(e);
       },
     },
@@ -83,7 +94,7 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
     },
-  ]
+  ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };
 export default Navdata;
