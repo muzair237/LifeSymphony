@@ -4,7 +4,7 @@ import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
 
 //import Components
 import SearchOption from "../Components/Common/SearchOption";
-import LanguageDropdown from "../Components/Common/LanguageDropdown";
+// import LanguageDropdown from "../Components/Common/LanguageDropdown";
 import WebAppsDropdown from "../Components/Common/WebAppsDropdown";
 import MyCartDropdown from "../Components/Common/MyCartDropdown";
 import FullScreenDropdown from "../Components/Common/FullScreenDropdown";
@@ -109,10 +109,8 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             </div>
 
             <div className="d-flex align-items-center">
-              
-
               {/* LanguageDropdown */}
-              <LanguageDropdown />
+              {/* <LanguageDropdown /> */}
 
               {/* WebAppsDropdown */}
               <WebAppsDropdown />
