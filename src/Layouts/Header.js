@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Dropdown, DropdownMenu, DropdownToggle, Form } from 'reactstrap';
 
 //import Components
-import SearchOption from "../Components/Common/SearchOption";
+import SearchOption from '../Components/Common/SearchOption';
 // import LanguageDropdown from "../Components/Common/LanguageDropdown";
-import WebAppsDropdown from "../Components/Common/WebAppsDropdown";
-import MyCartDropdown from "../Components/Common/MyCartDropdown";
-import FullScreenDropdown from "../Components/Common/FullScreenDropdown";
-import NotificationDropdown from "../Components/Common/NotificationDropdown";
-import ProfileDropdown from "../Components/Common/ProfileDropdown";
-import LightDark from "../Components/Common/LightDark";
+import WebAppsDropdown from '../Components/Common/WebAppsDropdown';
+import MyCartDropdown from '../Components/Common/MyCartDropdown';
+import FullScreenDropdown from '../Components/Common/FullScreenDropdown';
+import NotificationDropdown from '../Components/Common/NotificationDropdown';
+import ProfileDropdown from '../Components/Common/ProfileDropdown';
+import LightDark from '../Components/Common/LightDark';
 
-import { changeSidebarVisibility } from "../slices/thunks";
-import { useSelector, useDispatch } from "react-redux";
+import { changeSidebarVisibility } from '../slices/thunks';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
   const dispatch = useDispatch();
 
-  const { sidebarVisibilitytype } = useSelector((state) => ({
+  const { sidebarVisibilitytype } = useSelector(state => ({
     sidebarVisibilitytype: state.Layout.sidebarVisibilitytype,
   }));
 
@@ -29,45 +29,44 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
 
   const toogleMenuBtn = () => {
     var windowSize = document.documentElement.clientWidth;
-    dispatch(changeSidebarVisibility("show"));
+    dispatch(changeSidebarVisibility('show'));
 
-    if (windowSize > 767)
-      document.querySelector(".hamburger-icon").classList.toggle("open");
+    if (windowSize > 767) document.querySelector('.hamburger-icon').classList.toggle('open');
 
     //For collapse horizontal menu
-    if (document.documentElement.getAttribute("data-layout") === "horizontal") {
-      document.body.classList.contains("menu")
-        ? document.body.classList.remove("menu")
-        : document.body.classList.add("menu");
+    if (document.documentElement.getAttribute('data-layout') === 'horizontal') {
+      document.body.classList.contains('menu')
+        ? document.body.classList.remove('menu')
+        : document.body.classList.add('menu');
     }
 
     //For collapse vertical and semibox menu
     if (
-      sidebarVisibilitytype === "show" &&
-      (document.documentElement.getAttribute("data-layout") === "vertical" ||
-        document.documentElement.getAttribute("data-layout") === "semibox")
+      sidebarVisibilitytype === 'show' &&
+      (document.documentElement.getAttribute('data-layout') === 'vertical' ||
+        document.documentElement.getAttribute('data-layout') === 'semibox')
     ) {
       if (windowSize < 1025 && windowSize > 767) {
-        document.body.classList.remove("vertical-sidebar-enable");
-        document.documentElement.getAttribute("data-sidebar-size") === "sm"
-          ? document.documentElement.setAttribute("data-sidebar-size", "")
-          : document.documentElement.setAttribute("data-sidebar-size", "sm");
+        document.body.classList.remove('vertical-sidebar-enable');
+        document.documentElement.getAttribute('data-sidebar-size') === 'sm'
+          ? document.documentElement.setAttribute('data-sidebar-size', '')
+          : document.documentElement.setAttribute('data-sidebar-size', 'sm');
       } else if (windowSize > 1025) {
-        document.body.classList.remove("vertical-sidebar-enable");
-        document.documentElement.getAttribute("data-sidebar-size") === "lg"
-          ? document.documentElement.setAttribute("data-sidebar-size", "sm")
-          : document.documentElement.setAttribute("data-sidebar-size", "lg");
+        document.body.classList.remove('vertical-sidebar-enable');
+        document.documentElement.getAttribute('data-sidebar-size') === 'lg'
+          ? document.documentElement.setAttribute('data-sidebar-size', 'sm')
+          : document.documentElement.setAttribute('data-sidebar-size', 'lg');
       } else if (windowSize <= 767) {
-        document.body.classList.add("vertical-sidebar-enable");
-        document.documentElement.setAttribute("data-sidebar-size", "lg");
+        document.body.classList.add('vertical-sidebar-enable');
+        document.documentElement.setAttribute('data-sidebar-size', 'lg');
       }
     }
 
     //Two column menu
-    if (document.documentElement.getAttribute("data-layout") === "twocolumn") {
-      document.body.classList.contains("twocolumn-panel")
-        ? document.body.classList.remove("twocolumn-panel")
-        : document.body.classList.add("twocolumn-panel");
+    if (document.documentElement.getAttribute('data-layout') === 'twocolumn') {
+      document.body.classList.contains('twocolumn-panel')
+        ? document.body.classList.remove('twocolumn-panel')
+        : document.body.classList.add('twocolumn-panel');
     }
   };
 
@@ -79,15 +78,11 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
                 <Link to="/" className="logo logo-dark">
-                  <span style={{ color: "#bec887", fontSize: "30px" }}>
-                    Green Me
-                  </span>
+                  <span style={{ color: '#bec887', fontSize: '30px' }}>LifeSymphony</span>
                 </Link>
 
                 <Link to="/" className="logo logo-light">
-                  <span style={{ color: "#fff", fontSize: "30px" }}>
-                    Green Me
-                  </span>
+                  <span style={{ color: '#fff', fontSize: '30px' }}>LifeSymphony</span>
                 </Link>
               </div>
 
@@ -96,8 +91,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 onClick={toogleMenuBtn}
                 type="button"
                 className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
-                id="topnav-hamburger-icon"
-              >
+                id="topnav-hamburger-icon">
                 <span className="hamburger-icon">
                   <span></span>
                   <span></span>
@@ -122,10 +116,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
               <FullScreenDropdown />
 
               {/* Dark/Light Mode set */}
-              <LightDark
-                layoutMode={layoutModeType}
-                onChangeLayoutMode={onChangeLayoutMode}
-              />
+              <LightDark layoutMode={layoutModeType} onChangeLayoutMode={onChangeLayoutMode} />
 
               {/* NotificationDropdown
               <NotificationDropdown /> */}
